@@ -29,4 +29,16 @@ open class MemoryRepository<T: Domain> {
 
     fun get(id: Int) = get(id.toString())
 
+    private fun remove(record: T){
+        if (!records.contains(record)){
+            throw IllegalArgumentException("Entity not found. Can' be removed.")
+        }
+
+        records.remove(record)
+    }
+
+    fun remove(id: String) = remove(get(id))
+
+    fun remove(id: Int) = remove(get(id))
+
 }
