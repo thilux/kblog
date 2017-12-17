@@ -41,4 +41,6 @@ open class MemoryRepository<T: Domain> {
 
     fun remove(id: Int) = remove(get(id))
 
+    fun clear() = records.clear()
+
 }

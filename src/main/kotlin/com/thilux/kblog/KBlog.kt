@@ -111,7 +111,8 @@ fun Application.main(){
             errorAware {
                 val id = call.parameters["id"] ?: throw IllegalArgumentException("Parameter id not found")
                 LOG.debug("HTTP_DELETE request for Post entity with id: $id")
-                call.respond(PostRepository.remove(id))
+                PostRepository.remove(id)
+                call.respondSuccessJson()
             }
         }
 
@@ -119,7 +120,8 @@ fun Application.main(){
             errorAware {
                 val id = call.parameters["id"] ?: throw IllegalArgumentException("Parameter id not found")
                 LOG.debug("HTTP_DELETE request for Comment entity with id: $id")
-                call.respond(CommentRepository.remove(id))
+                CommentRepository.remove(id)
+                call.respondSuccessJson()
             }
         }
 
