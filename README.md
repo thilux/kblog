@@ -37,3 +37,11 @@ Then:
 gradle run
 ```
 
+## Branches
+
+The repository is devided in the following branches, each being incremental to the previous in terms of features:
+
+- **part1:** Implementation with no database, storing data in runtime memory (available)
+- **part2:** Implementation of database handling for real persistence on database (planned)
+- **part3:** Implementation of JWT security (planned)
+
