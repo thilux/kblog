@@ -1,9 +1,9 @@
 package com.thilux.kblog
 
 import com.google.gson.Gson
-import com.thilux.kblog.dto.Comment
-import com.thilux.kblog.dto.Domain
-import com.thilux.kblog.dto.Post
+import com.thilux.kblog.dto.CommentDto
+import com.thilux.kblog.dto.DomainDto
+import com.thilux.kblog.dto.PostDto
 import com.thilux.kblog.repository.CommentRepository
 import com.thilux.kblog.repository.PostRepository
 import io.ktor.application.Application
@@ -27,8 +27,8 @@ class KBlogTest {
 
     private val json = "application/json"
     private val gson = Gson()
-    private val postContent = gson.toJson(Post("test post", "post from test", Date()))
-    private val commentContent = gson.toJson(Comment(1, "commentator1", "Bla bla bla", Date()))
+    private val postContent = gson.toJson(PostDto("test post", "post from test", Date()))
+    private val commentContent = gson.toJson(CommentDto(1, "commentator1", "Bla bla bla", Date()))
 
     @After
     fun clear() {
@@ -38,14 +38,14 @@ class KBlogTest {
 
     @Test
     fun getAllPostsTest() = withTestApplication(Application::main){
-        val post1 = savePost(gson.toJson(Post("post1", "bla bla bla", Date())))
-        val post2 = savePost(gson.toJson(Post("post2", "bla bla bla", Date())))
+        val post1 = savePost(gson.toJson(PostDto("post1", "bla bla bla", Date())))
+        val post2 = savePost(gson.toJson(PostDto("post2", "bla bla bla", Date())))
 
         handleRequest(HttpMethod.Get, POSTS_ENDPOINT) {
             addHeader("Accept", json)
         }.response.let {
             assertEquals(HttpStatusCode.OK, it.status())
-            val response = gson.fromJson(it.content, Array<Post>::class.java)
+            val response = gson.fromJson(it.content, Array<PostDto>::class.java)
             response.find { it.title == post1.title } ?: fail()
             response.find { it.title == post2.title } ?: fail()
         }
@@ -96,14 +96,14 @@ class KBlogTest {
 
     @Test
     fun getAllCommentsTest() = withTestApplication(Application::main) {
-        val comment1 = saveComment(gson.toJson(Comment(1, "testu", "comment1", Date())))
-        val comment2 = saveComment(gson.toJson(Comment(1, "testu", "comment2", Date())))
+        val comment1 = saveComment(gson.toJson(CommentDto(1, "testu", "comment1", Date())))
+        val comment2 = saveComment(gson.toJson(CommentDto(1, "testu", "comment2", Date())))
 
         handleRequest(HttpMethod.Get, COMMENTS_ENDPOINT) {
             addHeader("Accept", json)
         }.response.let {
             assertEquals(HttpStatusCode.OK, it.status())
-            val response = gson.fromJson(it.content, Array<Comment>::class.java)
+            val response = gson.fromJson(it.content, Array<CommentDto>::class.java)
             response.find { it.content == comment1.content }
             response.find { it.content == comment2.content }
         }
@@ -136,14 +136,14 @@ class KBlogTest {
     @Test
     fun getAllCommentsForPostId() = withTestApplication(Application::main) {
 
-        val comment1 = saveComment(gson.toJson(Comment(1, "testu", "comment1", Date())))
-        saveComment(gson.toJson(Comment(2, "testu", "comment2", Date())))
-        val comment3 = saveComment(gson.toJson(Comment(1, "testu", "comment3", Date())))
+        val comment1 = saveComment(gson.toJson(CommentDto(1, "testu", "comment1", Date())))
+        saveComment(gson.toJson(CommentDto(2, "testu", "comment2", Date())))
+        val comment3 = saveComment(gson.toJson(CommentDto(1, "testu", "comment3", Date())))
         handleRequest(HttpMethod.Get, "$POST_ENDPOINT/1/comments") {
             addHeader("Accept", json)
         }.response.let {
             assertEquals(HttpStatusCode.OK, it.status())
-            val response = gson.fromJson(it.content, Array<Comment>::class.java)
+            val response = gson.fromJson(it.content, Array<CommentDto>::class.java)
             response.find { it.content == comment1.content }
             response.find { it.content == comment3.content }
 
@@ -176,7 +176,7 @@ class KBlogTest {
         }
     }
 
-    private fun <T: Domain> TestApplicationEngine.saveEntity(content: String, url: String, clazz: Class<T>): T {
+    private fun <T: DomainDto> TestApplicationEngine.saveEntity(content: String, url: String, clazz: Class<T>): T {
 
         val postRequest = handleRequest(HttpMethod.Post, url) {
             body = content
@@ -191,12 +191,12 @@ class KBlogTest {
 
     }
 
-    private fun TestApplicationEngine.saveComment(comment: String = commentContent): Comment {
-        return saveEntity(comment, COMMENT_ENDPOINT, Comment::class.java)
+    private fun TestApplicationEngine.saveComment(comment: String = commentContent): CommentDto {
+        return saveEntity(comment, COMMENT_ENDPOINT, CommentDto::class.java)
     }
 
-    private fun TestApplicationEngine.savePost(post: String = postContent): Post {
-        return saveEntity(post, POST_ENDPOINT, Post::class.java)
+    private fun TestApplicationEngine.savePost(post: String = postContent): PostDto {
+        return saveEntity(post, POST_ENDPOINT, PostDto::class.java)
     }
 
 

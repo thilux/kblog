@@ -4,8 +4,8 @@ package com.thilux.kblog
  * Created by tsantana on 15/12/17.
  */
 
-import com.thilux.kblog.dto.Comment
-import com.thilux.kblog.dto.Post
+import com.thilux.kblog.dto.CommentDto
+import com.thilux.kblog.dto.PostDto
 import com.thilux.kblog.repository.CommentRepository
 import com.thilux.kblog.repository.PostRepository
 import io.ktor.application.*
@@ -48,8 +48,8 @@ fun Application.main(){
         post(POST_ENDPOINT) {
 
             errorAware {
-                val postObject = call.receive<Post>()
-                LOG.debug("Received HTTP_POST request for Post entity: $postObject")
+                val postObject = call.receive<PostDto>()
+                LOG.debug("Received HTTP_POST request for PostDto entity: $postObject")
 
                 call.respond(PostRepository.add(postObject))
             }
@@ -59,8 +59,8 @@ fun Application.main(){
         post(COMMENT_ENDPOINT) {
 
             errorAware {
-                val commentObject = call.receive<Comment>()
-                LOG.debug("Received HTTP_POST request for Comment entity: $commentObject")
+                val commentObject = call.receive<CommentDto>()
+                LOG.debug("Received HTTP_POST request for CommentDto entity: $commentObject")
 
                 call.respond(CommentRepository.add(commentObject))
             }
@@ -70,7 +70,7 @@ fun Application.main(){
         get(POSTS_ENDPOINT) {
 
             errorAware {
-                LOG.debug("HTTP_GET request for all Post entities")
+                LOG.debug("HTTP_GET request for all PostDto entities")
                 call.respond(PostRepository.getAll())
             }
 
@@ -78,7 +78,7 @@ fun Application.main(){
 
         get(COMMENTS_ENDPOINT) {
             errorAware {
-                LOG.debug("HTTP_GET request for all Comment entities")
+                LOG.debug("HTTP_GET request for all CommentDto entities")
                 call.respond(CommentRepository.getAll())
             }
         }
@@ -86,7 +86,7 @@ fun Application.main(){
         get(POST_ENDPOINT + "/{id}") {
             errorAware {
                 val id = call.parameters["id"] ?: throw IllegalArgumentException("Parameter id not found")
-                LOG.debug("HTTP_GET request for Post entity with id: $id")
+                LOG.debug("HTTP_GET request for PostDto entity with id: $id")
                 call.respond(PostRepository.get(id))
             }
         }
@@ -94,7 +94,7 @@ fun Application.main(){
         get(POST_ENDPOINT + "/{id}/comments") {
             errorAware {
                 val id = call.parameters["id"] ?: throw IllegalArgumentException("Parameter id not found")
-                LOG.debug("HTTP_GET request for Comment entities with postId: $id")
+                LOG.debug("HTTP_GET request for CommentDto entities with postId: $id")
                 call.respond(CommentRepository.getFromPostId(id))
             }
         }
@@ -102,7 +102,7 @@ fun Application.main(){
         get(COMMENT_ENDPOINT + "/{id}") {
             errorAware {
                 val id = call.parameters["id"] ?: throw IllegalArgumentException("Parameter id not found")
-                LOG.debug("HTTP_GET request for Comment entity with id: $id")
+                LOG.debug("HTTP_GET request for CommentDto entity with id: $id")
                 call.respond(CommentRepository.get(id))
             }
         }
@@ -110,7 +110,7 @@ fun Application.main(){
         delete(POST_ENDPOINT + "/{id}") {
             errorAware {
                 val id = call.parameters["id"] ?: throw IllegalArgumentException("Parameter id not found")
-                LOG.debug("HTTP_DELETE request for Post entity with id: $id")
+                LOG.debug("HTTP_DELETE request for PostDto entity with id: $id")
                 PostRepository.remove(id)
                 call.respondSuccessJson()
             }
@@ -119,7 +119,7 @@ fun Application.main(){
         delete(COMMENT_ENDPOINT + "/{id}") {
             errorAware {
                 val id = call.parameters["id"] ?: throw IllegalArgumentException("Parameter id not found")
-                LOG.debug("HTTP_DELETE request for Comment entity with id: $id")
+                LOG.debug("HTTP_DELETE request for CommentDto entity with id: $id")
                 CommentRepository.remove(id)
                 call.respondSuccessJson()
             }

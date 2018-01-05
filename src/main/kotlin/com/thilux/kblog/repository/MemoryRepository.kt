@@ -1,6 +1,6 @@
 package com.thilux.kblog.repository
 
-import com.thilux.kblog.dto.Domain
+import com.thilux.kblog.dto.DomainDto
 import java.util.concurrent.CopyOnWriteArraySet
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger
  * Created by tsantana on 16/12/17.
  */
 
-open class MemoryRepository<T: Domain> {
+open class MemoryRepository<T: DomainDto> {
 
     private val idCounter = AtomicInteger()
     private val records = CopyOnWriteArraySet<T>()
