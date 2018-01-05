@@ -1,9 +1,9 @@
 package com.thilux.kblog
 
 import com.google.gson.Gson
-import com.thilux.kblog.domain.Comment
-import com.thilux.kblog.domain.Domain
-import com.thilux.kblog.domain.Post
+import com.thilux.kblog.dto.Comment
+import com.thilux.kblog.dto.Domain
+import com.thilux.kblog.dto.Post
 import com.thilux.kblog.repository.CommentRepository
 import com.thilux.kblog.repository.PostRepository
 import io.ktor.application.Application

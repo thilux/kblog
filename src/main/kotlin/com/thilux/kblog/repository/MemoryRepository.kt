@@ -1,6 +1,6 @@
 package com.thilux.kblog.repository
 
-import com.thilux.kblog.domain.Domain
+import com.thilux.kblog.dto.Domain
 import java.util.concurrent.CopyOnWriteArraySet
 import java.util.concurrent.atomic.AtomicInteger
 

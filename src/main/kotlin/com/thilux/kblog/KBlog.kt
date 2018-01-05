@@ -4,8 +4,8 @@ package com.thilux.kblog
  * Created by tsantana on 15/12/17.
  */
 
-import com.thilux.kblog.domain.Comment
-import com.thilux.kblog.domain.Post
+import com.thilux.kblog.dto.Comment
+import com.thilux.kblog.dto.Post
 import com.thilux.kblog.repository.CommentRepository
 import com.thilux.kblog.repository.PostRepository
 import io.ktor.application.*
