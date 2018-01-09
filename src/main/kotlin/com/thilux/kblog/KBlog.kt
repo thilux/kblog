@@ -4,6 +4,8 @@ package com.thilux.kblog
  * Created by tsantana on 15/12/17.
  */
 
+import com.thilux.kblog.domain.CommentEntity
+import com.thilux.kblog.domain.PostEntity
 import com.thilux.kblog.dto.CommentDto
 import com.thilux.kblog.dto.PostDto
 import com.thilux.kblog.repository.CommentRepository
@@ -19,6 +21,8 @@ import io.ktor.pipeline.PipelineContext
 import io.ktor.request.receive
 import io.ktor.response.*
 import io.ktor.routing.*
+import org.jetbrains.squash.definition.TableDefinition
+import org.jetbrains.squash.dialects.h2.H2Connection
 import java.text.DateFormat
 import java.time.Duration
 
@@ -31,6 +35,10 @@ const val COMMENTS_ENDPOINT = "$API_ENDPOINT/comments"
 fun Application.main(){
 
     LOG.debug("Starting kblog application.")
+
+    connectToDatabase()
+
+    createTablesIfNotExisting()
 
     install(DefaultHeaders)
     install(CORS) {
@@ -126,6 +134,20 @@ fun Application.main(){
         }
 
     }
+
+}
+
+fun Application.connectToDatabase() {
+    DatabaseHandler.createConnection()
+    LOG.debug("Database connection established!")
+}
+
+fun Application.createTablesIfNotExisting() {
+
+    DatabaseHandler.createTables(PostEntity, CommentEntity)
+
+    LOG.debug("Database tables created!")
+
 
 }
 
