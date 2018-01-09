@@ -1,6 +1,7 @@
 package com.thilux.kblog.repository
 
 import com.thilux.kblog.dto.DomainDto
+import org.jetbrains.squash.definition.TableDefinition
 import java.util.concurrent.CopyOnWriteArraySet
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -8,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger
  * Created by tsantana on 16/12/17.
  */
 
-open class MemoryRepository<T: DomainDto> {
+open class MemoryRepository<T: DomainDto<TableDefinition>> {
 
     private val idCounter = AtomicInteger()
     private val records = CopyOnWriteArraySet<T>()

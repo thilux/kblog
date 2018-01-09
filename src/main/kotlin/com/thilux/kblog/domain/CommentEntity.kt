@@ -11,4 +11,5 @@ object CommentEntity : TableDefinition() {
     val commentator = varchar("commentator", 100)
     val content = blob("content")
     val post = reference(PostEntity.id, "post_id")
+    val commentDate = datetime("comment_date")
 }
