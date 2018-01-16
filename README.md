@@ -15,7 +15,7 @@ The solution is heavily based on the following sample projects found on GitHub o
 
 - Using Netty as the server engine
 - All services are JSON based REST services
-- In memory database with time to live constrained by application run time. No journals or logs are generated.
+- H2 in memory database using [Squash](https://github.com/orangy/squash) as the persistence layer
 - SLF4J is used for logging.
 - No security implemented so far.
 
@@ -39,7 +39,7 @@ gradle run
 
 ## Branches
 
-The repository is devided in the following branches, each being incremental to the previous in terms of features:
+The repository is divided in the following branches, each being incremental to the previous in terms of features:
 
 - **part1:** Implementation with no database, storing data in runtime memory (available)
 - **part2:** Implementation of database handling for real persistence on database (planned)
