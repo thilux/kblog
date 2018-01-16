@@ -21,8 +21,6 @@ import io.ktor.pipeline.PipelineContext
 import io.ktor.request.receive
 import io.ktor.response.*
 import io.ktor.routing.*
-import org.jetbrains.squash.definition.TableDefinition
-import org.jetbrains.squash.dialects.h2.H2Connection
 import java.text.DateFormat
 import java.time.Duration
 
@@ -39,6 +37,12 @@ fun Application.main(){
     connectToDatabase()
 
     createTablesIfNotExisting()
+
+    /*DatabaseHandler.withTransaction {
+
+        databaseSchema().create(PostEntity, CommentEntity)
+
+    }*/
 
     install(DefaultHeaders)
     install(CORS) {
@@ -59,6 +63,7 @@ fun Application.main(){
                 val postObject = call.receive<PostDto>()
                 LOG.debug("Received HTTP_POST request for PostDto entity: $postObject")
 
+                //call.respond(PostRepository.add(postObject.toEntity()))
                 call.respond(PostRepository.add(postObject))
             }
 
@@ -95,7 +100,8 @@ fun Application.main(){
             errorAware {
                 val id = call.parameters["id"] ?: throw IllegalArgumentException("Parameter id not found")
                 LOG.debug("HTTP_GET request for PostDto entity with id: $id")
-                call.respond(PostRepository.get(id))
+
+                call.respond(PostRepository.getOneById(id.toInt()))
             }
         }
 
@@ -103,7 +109,7 @@ fun Application.main(){
             errorAware {
                 val id = call.parameters["id"] ?: throw IllegalArgumentException("Parameter id not found")
                 LOG.debug("HTTP_GET request for CommentDto entities with postId: $id")
-                call.respond(CommentRepository.getFromPostId(id))
+                call.respond(CommentRepository.getAllFromPostId(id.toInt()))
             }
         }
 
@@ -111,7 +117,7 @@ fun Application.main(){
             errorAware {
                 val id = call.parameters["id"] ?: throw IllegalArgumentException("Parameter id not found")
                 LOG.debug("HTTP_GET request for CommentDto entity with id: $id")
-                call.respond(CommentRepository.get(id))
+                call.respond(CommentRepository.getOneById(id.toInt()))
             }
         }
 
@@ -119,7 +125,7 @@ fun Application.main(){
             errorAware {
                 val id = call.parameters["id"] ?: throw IllegalArgumentException("Parameter id not found")
                 LOG.debug("HTTP_DELETE request for PostDto entity with id: $id")
-                PostRepository.remove(id)
+                PostRepository.remove(id.toInt())
                 call.respondSuccessJson()
             }
         }
@@ -128,7 +134,7 @@ fun Application.main(){
             errorAware {
                 val id = call.parameters["id"] ?: throw IllegalArgumentException("Parameter id not found")
                 LOG.debug("HTTP_DELETE request for CommentDto entity with id: $id")
-                CommentRepository.remove(id)
+                CommentRepository.remove(id.toInt())
                 call.respondSuccessJson()
             }
         }
@@ -137,14 +143,15 @@ fun Application.main(){
 
 }
 
-fun Application.connectToDatabase() {
+fun connectToDatabase() {
     DatabaseHandler.createConnection()
     LOG.debug("Database connection established!")
 }
 
-fun Application.createTablesIfNotExisting() {
+fun createTablesIfNotExisting() {
 
-    DatabaseHandler.createTables(PostEntity, CommentEntity)
+    if (!tableFromDefinitionExists(PostEntity)) DatabaseHandler.createTables(PostEntity)
+    if (!tableFromDefinitionExists(CommentEntity)) DatabaseHandler.createTables(CommentEntity)
 
     LOG.debug("Database tables created!")
 

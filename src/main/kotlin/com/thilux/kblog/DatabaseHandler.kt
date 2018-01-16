@@ -22,7 +22,14 @@ object DatabaseHandler: DatabaseCommands {
 
     override fun createConnection(): DatabaseConnection = H2Connection.createMemoryConnection()
 
+    private val mainConnection = createConnection()
+
+    override fun createTransaction(): Transaction {
+        return mainConnection.createTransaction()
+    }
+
     fun createTables(vararg tables: TableDefinition) = withTransaction {
+
         databaseSchema().create(tables.toList())
     }
 
