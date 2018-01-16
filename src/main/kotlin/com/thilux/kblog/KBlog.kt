@@ -38,12 +38,6 @@ fun Application.main(){
 
     createTablesIfNotExisting()
 
-    /*DatabaseHandler.withTransaction {
-
-        databaseSchema().create(PostEntity, CommentEntity)
-
-    }*/
-
     install(DefaultHeaders)
     install(CORS) {
         maxAge = Duration.ofDays(1)

@@ -16,7 +16,6 @@ import org.jetbrains.squash.definition.TableDefinition
 import org.junit.After
 import org.junit.Test
 import java.time.LocalDateTime
-import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.fail
 
