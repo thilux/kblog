@@ -53,7 +53,7 @@ dependencies {
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
 
     testCompile "io.ktor:ktor-server-test-host:$ktor_version"
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'junit', name: 'junit', version: '4.13'
 }
 
 task stage {
