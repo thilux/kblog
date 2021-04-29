@@ -1,0 +1,27 @@
+version: 2
+updates:
+- package-ecosystem: gradle
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: io.ktor:ktor-server-test-host
+    versions:
+    - 1.5.1
+    - 1.5.2
+  - dependency-name: io.ktor:ktor-gson
+    versions:
+    - 1.5.1
+    - 1.5.2
+  - dependency-name: io.ktor:ktor
+    versions:
+    - 1.5.1
+    - 1.5.2
+  - dependency-name: io.ktor:ktor-server-netty
+    versions:
+    - 1.5.1
+    - 1.5.2
+  - dependency-name: junit:junit
+    versions:
+    - 4.13.1
